@@ -175,5 +175,22 @@ namespace Mono.TextTemplating.Tests
 
 			AssertNoopBuild ();
 		}
+
+		[Fact]
+		public void T4ReferencePath ()
+		{
+			using var ctx = new MSBuildTestContext ();
+			var project = ctx.LoadTestProject ("ReferencePathTest")
+				.WithProperty ("TransformOnBuild", "true");
+
+			project.Restore ();
+
+			var instance = project.Build ("Build");			
+
+			var generatedFilePath = project.DirectoryPath["foo.txt"].AssertTextStartsWith("Hello from DLL: ReferencePath works!");
+
+			instance.AssertSingleItem ("GeneratedTemplates", withFullPath: generatedFilePath);
+			instance.AssertNoItems ("PreprocessedTemplates");
+		}
 	}
 }

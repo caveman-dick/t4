@@ -1,0 +1,4 @@
+<#@ template language="C#" #>
+<#@ assembly name="ReferencePathTest" #>
+<#@ import namespace="TestReference" #>
+Hello from DLL: <#= TestClass.GetMessage() #>
